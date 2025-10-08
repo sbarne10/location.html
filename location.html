@@ -3,32 +3,36 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>User Location</title>
+    <title>User Location Only</title>
     <style>
       body {
         margin: 0;
-        font-family: sans-serif;
+        background: transparent;
+        font-family: "Inter Display", Inter, system-ui, -apple-system, sans-serif;
+        font-weight: 400;
+        color: #6b7280; /* Tailwind’s gray-500 */
         font-size: 16px;
-        color: #666;
         display: flex;
-        justify-content: center;
         align-items: center;
+        justify-content: center;
         height: 100%;
       }
     </style>
   </head>
   <body>
     <div id="location">Loading…</div>
+
     <script>
       async function showLocation() {
         try {
           const res = await fetch("https://ipapi.co/json/");
           const data = await res.json();
-          const city = data.city;
-          const region = data.region_code;
-          document.getElementById("location").innerText = `${city}, ${region}`;
-        } catch {
-          document.getElementById("location").innerText = "Location unavailable";
+          const city = data.city || "Unknown";
+          const region = data.region_code || data.region || "";
+          document.getElementById("location").textContent =
+            region ? `${city}, ${region}` : city;
+        } catch (e) {
+          document.getElementById("location").textContent = "Location unavailable";
         }
       }
       showLocation();
